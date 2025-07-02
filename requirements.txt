@@ -5,3 +5,4 @@ scikit-learn==1.7.0
 sentence-transformers==5.0.0
 spacy==3.8.7
 pandas==2.3.0
+matplotlib==.10.3
