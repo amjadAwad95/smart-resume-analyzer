@@ -48,6 +48,8 @@ class DOCXExtractor(Extractor):
         for paragraph in document.paragraphs:
             text += paragraph.text
 
+        return text
+
 
 class TextExtractor(Extractor):
     """
