@@ -1,14 +1,15 @@
 from parser import PDFExtractor,TextExtractor
 from processor import Preprocessor
 from skill import SkillListMatcher
-from similarity import SentenceTransformerSimilarity, BertSimilarity
+from similarity import SentenceTransformerSimilarity, BertSimilarity, TFIDFSimilarity
 
 pdf_extractor = PDFExtractor()
 text_extractor = TextExtractor()
 preprocessor = Preprocessor()
 skill_matcher = SkillListMatcher()
 sentence_transformer = SentenceTransformerSimilarity()
-bert_similarity = BertSimilarity("slone/bert-base-multilingual-cased-bak-rus-similarity")
+bert_similarity = BertSimilarity()
+tfidf_similarity = TFIDFSimilarity()
 
 resume = pdf_extractor.extract("sample_data/amjadCVAI.pdf")
 job_description = text_extractor.extract("sample_data/job_description")
@@ -36,11 +37,6 @@ print("----------------------")
 print(skill_matcher.match(skills, match_skills))
 print("----------------------")
 
-resume_embedding = sentence_transformer.encode(resume)
-job_description_embedding = sentence_transformer.encode(job_description)
-
-bert_resume_embedding = bert_similarity.encode(resume)
-bert_job_description_embedding = bert_similarity.encode(job_description)
-
-print(sentence_transformer.similarity(resume_embedding, job_description_embedding))
-print(bert_similarity.similarity(bert_resume_embedding, bert_job_description_embedding))
+print(sentence_transformer.similarity(resume, job_description))
+print(bert_similarity.similarity(resume, job_description))
+print(tfidf_similarity.similarity(resume, job_description))
