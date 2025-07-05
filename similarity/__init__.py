@@ -1,3 +1,3 @@
-from .similarity import SentenceTransformerSimilarity, BertSimilarity
+from .similarity import SentenceTransformerSimilarity, BertSimilarity, TFIDFSimilarity
 
-__all__ = ["SentenceTransformerSimilarity", "BertSimilarity"]
+__all__ = ["SentenceTransformerSimilarity", "BertSimilarity", "TFIDFSimilarity"]

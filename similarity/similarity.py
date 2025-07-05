@@ -2,6 +2,43 @@ import torch
 from sentence_transformers import SentenceTransformer
 from transformers import BertTokenizerFast, BertModel
 import torch.nn.functional as F
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+class TFIDFSimilarity:
+    """
+    A class for computing sentence similarity using a TFIDF model.
+    """
+    def __init__(self):
+        """
+        Initializes the TfidfVectorizer.
+        """
+        self.model = TfidfVectorizer(ngram_range=(1, 1))
+
+    def encode(self, sentence1, sentence2):
+        """
+        Encode the sentence1 and sentence2 using the TFIDF model.
+        :param sentence1: The first sentence.
+        :param sentence2: The second sentence.
+        :return: The encode vector of the sentence1 and sentence2.
+        """
+        encodes = self.model.fit_transform([sentence1, sentence2])
+        return encodes[0], encodes[1]
+
+
+    def similarity(self, sentence1, sentence2):
+        """
+        Calculates cosine similarity between two sentence.
+        :param sentence1: First sentence text.
+        :param sentence2: Second sentence text.
+        :return: Cosine similarity score between the two sentence.
+        """
+        embedding1, embedding2 = self.encode(sentence1, sentence2)
+
+        return cosine_similarity(embedding1, embedding2)[0][0]
+
+
 
 class SentenceTransformerSimilarity:
     """
@@ -24,14 +61,18 @@ class SentenceTransformerSimilarity:
         return self.model.encode(sentence)
 
 
-    def similarity(self, embedding1, embedding2):
+    def similarity(self, sentence1, sentence2):
         """
-        Calculates cosine similarity between two embeddings.
-        :param embedding1: First sentence embedding.
-        :param embedding2: Second sentence embedding.
-        :return: Cosine similarity score between the two embeddings.
+        Calculates cosine similarity between two sentence.
+        :param sentence1: First sentence text.
+        :param sentence2: Second sentence text.
+        :return: Cosine similarity score between the two sentence.
         """
+        embedding1 = self.encode(sentence1)
+        embedding2 = self.encode(sentence2)
+
         return self.model.similarity(embedding1, embedding2).item()
+
 
 
 class BertSimilarity:
@@ -67,11 +108,14 @@ class BertSimilarity:
         return sentence_embedding
 
 
-    def similarity(self, embedding1, embedding2):
+    def similarity(self, sentence1, sentence2):
         """
-        Calculates cosine similarity between two embeddings.
-        :param embedding1: First sentence embedding.
-        :param embedding2: Second sentence embedding.
-        :return: Cosine similarity score between the two embeddings.
+        Calculates cosine similarity between two sentence.
+        :param sentence1: First sentence text.
+        :param sentence2: Second sentence text.
+        :return: Cosine similarity score between the two sentence.
         """
+        embedding1 = self.encode(sentence1)
+        embedding2 = self.encode(sentence2)
+
         return F.cosine_similarity(embedding1, embedding2).item()
