@@ -1,12 +1,25 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 class AiRecommendation:
+    """
+    Generates resume improvement suggestions based on a job description using a causal language model.
+    """
     def __init__(self, model_name="HuggingFaceTB/SmolLM2-1.7B-Instruct"):
+        """
+        Initializes the tokenizer and model with the specified model name.
+        :param model_name: The name of the model to use.
+        """
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(model_name)
 
 
     def recommend(self, resume, job_description):
+        """
+        Generates targeted resume improvement advice based on a job description.
+        :param resume: The user resume
+        :param job_description: The job description
+        :return: The recommendation
+        """
         prompt = f"""
         Given the following resume and job description, provide specific, actionable recommendations to improve the resume so it better matches the job description.
 
