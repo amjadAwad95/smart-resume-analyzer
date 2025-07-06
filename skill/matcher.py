@@ -34,11 +34,12 @@ class SkillListMatcher:
         return new_skills
 
 
-    def extract(self, text, skills):
+    def extract(self, text, skills, threshold=95):
         """
         Extracts relevant skills from the given text.
         :param text: The input text.
         :param skills: List of reference skill strings.
+        :param threshold: Threshold for matching skills.
         :return: List of matched skills found in the text.
         """
         text = text.lower()
@@ -55,7 +56,7 @@ class SkillListMatcher:
         found_skills = set()
         for phrase in candidates:
             match, score, _ = process.extractOne(phrase, new_skills)
-            if score >= 90:
+            if score >= threshold:
                 found_skills.add(match)
 
         return list(found_skills)
