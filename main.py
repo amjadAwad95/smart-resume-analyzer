@@ -1,6 +1,6 @@
 from parser import PDFExtractor,TextExtractor
 from processor import Preprocessor
-from skill import SkillListMatcher
+from skill import SkillListMatcher, SkillDynamicMatcher
 from similarity import SentenceTransformerSimilarity, BertSimilarity, TFIDFSimilarity
 from recommendation import AiRecommendation
 
@@ -12,12 +12,19 @@ sentence_transformer = SentenceTransformerSimilarity()
 bert_similarity = BertSimilarity()
 tfidf_similarity = TFIDFSimilarity()
 recommendation = AiRecommendation()
+matcher = SkillDynamicMatcher()
 
 resume = pdf_extractor.extract("sample_data/amjadCVAI.pdf")
-job_description = text_extractor.extract("sample_data/job_description")
+job_description = text_extractor.extract("sample_data/job_description.txt")
+
+resume_skill= matcher.extract(resume)
+print("----------------")
+jd_skill= matcher.extract(job_description)
 
 resume = preprocessor.preprocess(resume)
 job_description = preprocessor.preprocess(job_description)
+
+print(matcher.match(jd_skill, resume_skill))
 
 skills = [
     "Problem solving",
@@ -43,4 +50,3 @@ print(sentence_transformer.similarity(resume, job_description))
 print(bert_similarity.similarity(resume, job_description))
 print(tfidf_similarity.similarity(resume, job_description))
 print(recommendation.recommend(resume, job_description))
-

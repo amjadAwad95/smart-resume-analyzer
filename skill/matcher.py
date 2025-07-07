@@ -79,3 +79,35 @@ class SkillListMatcher:
                 count += 1
 
         return count / len(main_skills), f"{count}/{len(main_skills)}"
+
+
+class SkillDynamicMatcher:
+    def __init__(self, model_path="skill/Models/model-best"):
+        self.ner_model = spacy.load(model_path)
+
+
+    def extract(self, text):
+        skills = []
+        doc = self.ner_model(text)
+
+        for ent in doc.ents:
+            if "SKILLS" in ent.label_:
+                skills.append(ent.text.lower())
+
+        return list(set(skills))
+
+
+    def match(self, main_skills, extract_skills):
+        """
+        Matches extracted skills with main skills.
+        :param main_skills: List of target skill strings.
+        :param extract_skills: List of extracted skill strings.
+        :return: Tuple of match ratio and formatted match string.
+        """
+        count = 0
+
+        for skill in extract_skills:
+            if skill in main_skills:
+                count += 1
+
+        return count / len(main_skills), f"{count}/{len(main_skills)}"
