@@ -82,11 +82,23 @@ class SkillListMatcher:
 
 
 class SkillDynamicMatcher:
+    """
+    Extracts and matches skills using a trained spaCy NER model.
+    """
     def __init__(self, model_path="skill/Models/model-best"):
+        """
+        Initializes the NER model from the specified path.
+        :param model_path: Path to the trained NER model.
+        """
         self.ner_model = spacy.load(model_path)
 
 
     def extract(self, text):
+        """
+        Extracts skill entities from the input text.
+        :param text: The input text.
+        :return: List of extracted skill entities.
+        """
         skills = []
         doc = self.ner_model(text)
 
