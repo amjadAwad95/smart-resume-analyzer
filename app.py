@@ -28,7 +28,7 @@ def get_skill_matcher():
 
 @st.cache_resource
 def get_sentence_transformer():
-    return SentenceTransformerSimilarity()
+    return SentenceTransformerSimilarity("mixedbread-ai/mxbai-embed-large-v1")
 
 @st.cache_resource
 def get_ai_recommendation():

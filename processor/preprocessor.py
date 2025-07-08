@@ -40,6 +40,8 @@ class Preprocessor:
         """
         text = re.sub(r'(\w+):', r'\1:\n', text)
         text = re.sub(r'([a-z])([A-Z])', r'\1 \n\2', text)
+        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'[^\w\s]', '', text)
         text = text.lower()
 
         tokens = word_tokenize(text)
