@@ -4,7 +4,7 @@ from transformers import BertTokenizerFast, BertModel
 import torch.nn.functional as F
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+from sentence_transformers.util import cos_sim
 
 class TFIDFSimilarity:
     """
@@ -71,7 +71,7 @@ class SentenceTransformerSimilarity:
         embedding1 = self.encode(sentence1)
         embedding2 = self.encode(sentence2)
 
-        return self.model.similarity(embedding1, embedding2).item()
+        return cos_sim(embedding1, embedding2).item()
 
 
 
