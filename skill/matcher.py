@@ -2,6 +2,8 @@ import spacy
 from rapidfuzz import process
 from nltk import ngrams
 from nltk.tokenize import word_tokenize
+from huggingface_hub import snapshot_download
+
 
 class SkillListMatcher:
     """
@@ -85,11 +87,12 @@ class SkillDynamicMatcher:
     """
     Extracts and matches skills using a trained spaCy NER model.
     """
-    def __init__(self, model_path="skill/Models/model-best"):
+    def __init__(self, model_path="amjad-awad/skill-extractor"):
         """
         Initializes the NER model from the specified path.
         :param model_path: Path to the trained NER model.
         """
+        model_path = snapshot_download(model_path, repo_type="model")
         self.ner_model = spacy.load(model_path)
 
 
