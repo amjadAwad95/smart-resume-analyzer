@@ -24,7 +24,7 @@ The preprocessing stage implements various data cleaning techniques using the NL
 
 ### Skill Matching
 
-In the skill-matching stage, we extract skills from the resume by first lemmatizing the job skill list. We then generate n-grams ranging from 1 to 5 tokens to better capture skills expressed as single or multiple words. To accurately extract skills, we use an edit distance strategy with a similarity threshold of 95%. Finally, we implement a matching function that compares the two skill lists and calculates the percentage of similarity between them.
+In the skill-matching stage, we initially used a static method that involved lemmatizing a predefined job skill list and generating n-grams (1 to 5 tokens) from the resume text to capture both single-word and multi-word skills. An edit distance strategy with a 95% similarity threshold was applied to identify close matches, followed by a matching function that calculated the percentage of similarity between the extracted and predefined skills. To improve adaptability and reduce reliance on static lists, we developed a dynamic method by fine-tuning a pre-trained Named Entity Recognition (NER) model using spaCy. This model is capable of extracting skills directly from both resumes and job descriptions based on context, enabling more accurate identification of domain-specific and emerging skills. The dynamic approach offers a more flexible and scalable solution for skill extraction and matching.
 
 ### Similarity
 
@@ -40,18 +40,18 @@ In the evaluation stage, we test all three methods developed in the similarity s
 
 ## Results
 
-We evaluated three similarity methods: **TF-IDF**, **Sentence Transformer**, and **BERT with 4-layer mean pooling**. Below are the results based on four evaluation metrics: **accuracy**, **precision**, **recall**, and **F1-score**.
+We evaluated three similarity methods: **TF-IDF**, **Sentence Transformer**, and **BERT with 4-layer mean pooling**. The models were assessed using four evaluation metrics: **accuracy**, **precision**, **recall**, and **F1-score**.
 
 | Metric    | BERT (4-layer pooling) | TF-IDF | Sentence Transformer |
 |-----------|------------------------|--------|-----------------------|
-| Accuracy  | 0.5128                 | 0.4866 | **0.5549**            |
-| Precision | 0.5128                 | 0.0000 | **0.5573**            |
-| Recall    | **1.0000**             | 0.0000 | 0.6419                |
-| F1-score  | **0.6779**             | 0.0000 | 0.5966                |
+| Accuracy  | 0.5128                 | 0.4861 | **0.6032**            |
+| Precision | 0.5128                 | 0.0000 | **0.5792**            |
+| Recall    | **1.0000**             | 0.0000 | 0.8271                |
+| F1-score  | 0.6779                 | 0.0000 | **0.6813**            |
 
-- The **BERT model with mean pooling** achieved the highest recall and F1-score, making it the most effective in identifying relevant skills.
-- The **Sentence Transformer** model achieved the highest precision and accuracy, indicating more balanced performance.
-- The **TF-IDF** method performed poorly across all metrics, highlighting its limitations for semantic comparison in this task.
+- The **BERT model with mean pooling** achieved perfect recall, making it highly effective at identifying all relevant skills, although with slightly lower precision.
+- The **Sentence Transformer** model outperformed all others in terms of **accuracy**, **precision**, and **F1-score**, indicating a more balanced and robust performance.
+- The **TF-IDF** method performed poorly across all metrics, reaffirming its limitations for capturing semantic similarity in skill-matching tasks.
 
 ## Features
 
